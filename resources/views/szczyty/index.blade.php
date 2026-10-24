@@ -9,7 +9,11 @@
     <a href="{{ route('start') }}">Strona startowa</a>
     <h1>Szczyty Korony</h1>
     @forelse($szczyty as $szczyt)
-        <h2>{{ $szczyt['nazwa'] }}</h2>
+        <h2>
+            <a href="{{ route('szczyty.show', $szczyt['slug']) }}">
+                {{ $szczyt['nazwa'] }}
+            </a>
+        </h2>
         <p>{{ $szczyt['pasmo'] }} - {{ $szczyt['wysokosc'] }}</p>
     @empty
         <p>Brak szczytów na liście</p>
