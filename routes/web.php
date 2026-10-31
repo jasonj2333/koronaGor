@@ -9,3 +9,4 @@ Route::get('/', function () {
 
 Route::get('/szczyty', [SzczytController::class, 'index'])->name("szczyty.index");
 Route::get('/szczyty/{slug}', [SzczytController::class, 'show'])->name("szczyty.show");
+Route::get('/skladnia', [SzczytController::class, 'skladnia'])->name("skladnia");

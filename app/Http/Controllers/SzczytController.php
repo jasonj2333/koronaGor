@@ -35,9 +35,16 @@ class SzczytController extends Controller
     {
         return [
             ['slug' => 'rysy', 'nazwa' => 'Rysy', 'pasmo'=> 'Tatry', 'wysokosc'=>2499],
-            ['slug' => 'babia', 'nazwa' => 'Babia Góra', 'pasmo'=> 'Beskid Żywiecki', 'wysokosc'=>1725],
+            ['slug' => 'babia-gora', 'nazwa' => 'Babia Góra', 'pasmo'=> 'Beskid Żywiecki', 'wysokosc'=>1725],
             ['slug' => 'sniezka', 'nazwa' => 'Śnieżka', 'pasmo'=> 'Karkonosze', 'wysokosc'=>1603],
             ['slug' => 'lysica', 'nazwa' => 'Łysica', 'pasmo'=> 'Góry Świętokrzyskie', 'wysokosc'=>614],
         ];
+    }
+
+    public function skladnia()
+    {
+        return view('skladnia', [
+            'szczyty' => $this->listaSzczytow(),
+        ]);
     }
 }
