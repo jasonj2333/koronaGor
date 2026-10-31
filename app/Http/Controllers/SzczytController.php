@@ -44,9 +44,23 @@ class SzczytController extends Controller
     public function zapiszPlan(Request $request){
         $dane = $request->validate([
             'slug' => ['required', 'string'],
-            'data' => ['required', 'date', 'after_date_or_equal:today'],
+            'data' => ['required', 'date', 'after_or_equal:today'],
             'notatka' => ['nullable', 'string', 'max:200'],
-        ], []);
+        ], [
+            'data.required' => "Podaj datę wyjścia.",
+            'data.after_or_equal' => 'Plan dotyczy dzisiaj albo późniejszego dnia',
+        ]);
+
+        $dozwolone = collect($this->listaSzczytow())->pluck('slug');
+        if(! $dozwolone->contains($dane['slug'])){
+            return back()->withInput()->withErrors(['slug' => 'Wybierz szczyt z listy']);
+        }
+
+        $plany = session('plany', []);
+        $plany[] = $dane;
+        session(['plany' => $plany]);
+
+        return redirect()->route('szczyty.index')->with('status', 'Plan zapisany do sesji');
     }
 
     public function skladnia()

@@ -3,6 +3,23 @@
 @section('tytul', 'Lista szczytów')
 
 @section('content')
+    @if (session('status'))
+        <p class="komunikat">{{ session('status') }}</p>
+    @endif
+
+    @if (session('plany'))
+        <h2>Twoje plany zdobycia szczytów</h2>
+        <ul>
+            @foreach (session('plany') as $plan)
+                <li>{{ $plan['slug'] }} - {{ $plan['data'] }} 
+                @if(!empty($plan['notatka']))    
+                    - {{ $plan['notatka'] }}
+                @endif
+                </li>
+            @endforeach 
+        </ul>
+    @endif
+
     <h1>Szczyty Korony</h1>
     @forelse($szczyty as $szczyt)
         <x-karta :szczyt="$szczyt" />
