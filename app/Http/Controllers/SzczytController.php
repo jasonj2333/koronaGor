@@ -41,6 +41,14 @@ class SzczytController extends Controller
         ];
     }
 
+    public function zapiszPlan(Request $request){
+        $dane = $request->validate([
+            'slug' => ['required', 'string'],
+            'data' => ['required', 'date', 'after_date_or_equal:today'],
+            'notatka' => ['nullable', 'string', 'max:200'],
+        ], []);
+    }
+
     public function skladnia()
     {
         return view('skladnia', [
