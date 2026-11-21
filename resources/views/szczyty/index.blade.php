@@ -35,7 +35,7 @@
         <label>Szczyt
             <select name="slug" id="slug">
                 @foreach($szczyty as $szczyt)
-                    <option value="{{ $szczyt['slug'] }}" @selected(old('slug') == $szczyt['slug'])>{{ $szczyt['nazwa'] }}</option>
+                    <option value="{{ $szczyt->slug }}" @selected(old('slug') == $szczyt->slug)>{{ $szczyt->nazwa }}</option>
                 @endforeach
             </select>
         </label>

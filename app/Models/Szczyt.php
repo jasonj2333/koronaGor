@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Override;
 
 class Szczyt extends Model
 {
@@ -14,5 +15,11 @@ class Szczyt extends Model
     public function pasmo(): BelongsTo
     {
         return $this->belongsTo(Pasmo::class);
+    }
+
+    #[Override]
+    public function getRouteKeyName() : string
+    {
+        return 'slug';
     }
 }

@@ -2,44 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Szczyt;
 use Illuminate\Http\Request;
 
 class SzczytController extends Controller
 {
     public function index()
     {
-        $szczyty = $this->listaSzczytow();
+        $szczyty = Szczyt::query()
+                    ->with('pasmo')
+                    ->orderByDesc('wysokosc')
+                    ->get();
 
         return view('szczyty.index', ['szczyty' => $szczyty]);
     }
 
-    public function show(string $slug)
+    public function show(Szczyt $szczyt)
     {
-        $znaleziony = null;
-        $szczyty = $this->listaSzczytow();
-        foreach($szczyty as $szczyt){
-            if($szczyt['slug'] === $slug){
-                $znaleziony = $szczyt;
-                break;
-            }
-        }
+        $szczyt->load('pasmo');
 
-        if($znaleziony === null){
-            abort(404);
-        }
-
-        return view('szczyty.show', ['szczyt' => $znaleziony]);
+        return view('szczyty.show', ['szczyt' => $szczyt]);
     }
 
-    private function listaSzczytow() : array
-    {
-        return [
-            ['slug' => 'rysy', 'nazwa' => 'Rysy', 'pasmo'=> 'Tatry', 'wysokosc'=>2499],
-            ['slug' => 'babia-gora', 'nazwa' => 'Babia Góra', 'pasmo'=> 'Beskid Żywiecki', 'wysokosc'=>1725],
-            ['slug' => 'sniezka', 'nazwa' => 'Śnieżka', 'pasmo'=> 'Karkonosze', 'wysokosc'=>1603],
-            ['slug' => 'lysica', 'nazwa' => 'Łysica', 'pasmo'=> 'Góry Świętokrzyskie', 'wysokosc'=>614],
-        ];
-    }
+    // private function listaSzczytow() : array
+    // {
+    //     return [
+    //         ['slug' => 'rysy', 'nazwa' => 'Rysy', 'pasmo'=> 'Tatry', 'wysokosc'=>2499],
+    //         ['slug' => 'babia-gora', 'nazwa' => 'Babia Góra', 'pasmo'=> 'Beskid Żywiecki', 'wysokosc'=>1725],
+    //         ['slug' => 'sniezka', 'nazwa' => 'Śnieżka', 'pasmo'=> 'Karkonosze', 'wysokosc'=>1603],
+    //         ['slug' => 'lysica', 'nazwa' => 'Łysica', 'pasmo'=> 'Góry Świętokrzyskie', 'wysokosc'=>614],
+    //     ];
+    // }
 
     public function zapiszPlan(Request $request){
         $dane = $request->validate([
@@ -51,7 +44,7 @@ class SzczytController extends Controller
             'data.after_or_equal' => 'Plan dotyczy dzisiaj albo późniejszego dnia',
         ]);
 
-        $dozwolone = collect($this->listaSzczytow())->pluck('slug');
+        $dozwolone = Szczyt::query()->pluck('slug');
         if(! $dozwolone->contains($dane['slug'])){
             return back()->withInput()->withErrors(['slug' => 'Wybierz szczyt z listy']);
         }
@@ -65,8 +58,13 @@ class SzczytController extends Controller
 
     public function skladnia()
     {
+        $szczyty = Szczyt::query()
+                    ->with('pasmo')
+                    ->orderByDesc('wysokosc')
+                    ->get();
+    
         return view('skladnia', [
-            'szczyty' => $this->listaSzczytow(),
+            'szczyty' => $szczyty,
         ]);
     }
 }
