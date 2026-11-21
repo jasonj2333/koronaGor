@@ -1,4 +1,4 @@
-@extends('layout.korona')
+@extends('layouts.korona')
 
 @section('tytul', $szczyt['nazwa'])
 

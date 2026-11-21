@@ -1,4 +1,4 @@
-@extends('layout.korona')
+@extends('layouts.korona')
 
 @section('tytul', 'Lista szczytów')
 
@@ -22,7 +22,7 @@
 
     <h1>Szczyty Korony</h1>
     @forelse($szczyty as $szczyt)
-        <x-karta :szczyt="$szczyt" />
+        <x-karta-szczytu :szczyt="$szczyt" />
         {{-- <x-karta :szczyt="$szczyt">
             <p>Opis szczytu: dasdasdsadasdasdasda</p>
         </x-karta>  --}}
